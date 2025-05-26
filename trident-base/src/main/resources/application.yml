@@ -1,0 +1,38 @@
+dubbo:
+  application:
+    logger: slf4j
+    name: base
+    qos-enable: false
+    check-serializable: false
+  registry:
+    address: zookeeper://127.0.0.1:2181?timeout=30000
+#    address: nacos://192.168.56.102:8848
+  protocol:
+    port: 20880
+    name: tri
+spring:
+  application:
+    name: trident-base
+  jackson:
+    time-zone: GMT+8 # GMT , Asia/Shanghai
+  messages:
+    basename: message/i18n
+  datasource:
+    url: jdbc:mysql://localhost:3306/trident?zeroDateTimeBehavior=convertToNull&&allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: root
+    password: root
+    platform: mysql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    auto-commit: false
+    hikari:
+      connection-timeout: 30000
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: false
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+      validation-timeout: 800
+mybatis:
+  config-location: classpath:/mybatis/mybatis-config.xml
+  mapper-locations: classpath:/mappers/*.xml

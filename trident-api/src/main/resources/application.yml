@@ -1,0 +1,19 @@
+dubbo:
+  application:
+    logger: slf4j
+    name: trident-api
+    qos-enable: false
+    check-serializable: false
+  registry:
+    address: zookeeper://127.0.0.1:2181?timeout=30000
+#    address: nacos://192.168.56.101:8848
+  protocol:
+    name: tri
+  consumer:
+    check: true
+
+server:
+  port: 8078
+  http2:
+    enabled: true
+  shutdown: graceful

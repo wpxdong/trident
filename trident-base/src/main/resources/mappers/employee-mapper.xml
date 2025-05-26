@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.trident.base.mapper.EmployeeMapper">
+    <resultMap id="employeeResultMap" type="io.github.trident.common.domain.organization.Employee">
+        <id property="id" column="ID" />
+<!--        <result property="deptId" column="DEPT_ID" />-->
+        <result property="empCode" column="EMP_CODE" />
+        <result property="empName" column="EMP_NAME" />
+        <result property="gender" column="GENDER" />
+        <result property="birthdate" column="BIRTHDATE" />
+        <result property="status" column="STATUS" />
+        <result property="inDate" column="IN_DATE" />
+        <result property="outDate" column="OUT_DATE" />
+        <result property="offerTel" column="OFFICE_TEL" />
+        <result property="offerAddress" column="OFFICE_ADDRESS" />
+        <result property="offerZipCode" column="OFFICE_EMAIL" />
+        <result property="offerEmail" column="OFFICE_EMAIL" />
+        <result property="mobileNumber" column="MOBILE_NO" />
+        <result property="homeAddress" column="PERSON_EMAIL" />
+        <result property="personEmail" column="PERSON_EMAIL" />
+        <result property="remark" column="_REMARK" />
+        <result property="createUser" column="CREATE_USER"
+                javaType="String" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE"
+                javaType="Date" jdbcType="TIMESTAMP" />
+        <result property="modifyUser" column="MODIFY_USER"
+                javaType="String" jdbcType="VARCHAR" />
+        <result property="modifyDate" column="MODIFY_DATE"
+                javaType="Date" jdbcType="TIMESTAMP" />
+        <result property="position" column="POSITION" jdbcType="VARCHAR"/>
+    </resultMap>
+</mapper>

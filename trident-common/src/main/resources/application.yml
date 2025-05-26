@@ -1,0 +1,11 @@
+spring:
+  application:
+    name:trident-common
+  jackson:
+    time-zone:GMT+8 # GMT , Asia/Shanghai
+  messages:
+    basename: message/i18n
+mybatis:
+  config-location: classpath:/mybatis/mybatis-config.xml
+  mapper-locations: classpath:/mappers/*.xml
+  type-handlers-package: org.apache.shenyu.admin.mybatis.handler
