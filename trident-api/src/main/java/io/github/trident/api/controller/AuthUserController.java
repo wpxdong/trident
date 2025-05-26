@@ -89,4 +89,10 @@ public class AuthUserController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
+
+    private void toSuccessResponse(JsonObject response, AuthUser authUser) {
+        response.addProperty("result_code", "success");
+        JsonObject data = new JsonObject();
+        data.addProperty("token", "token");
+    }
 }
