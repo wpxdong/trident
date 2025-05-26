@@ -2,6 +2,7 @@ package io.github.trident.api.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.github.trident.api.Constants;
 import io.github.trident.base.login.AuthUserService;
 import io.github.trident.common.domain.authorization.AuthUser;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -68,32 +69,22 @@ public class AuthUserController extends ApiBaseController {
     public ResponseEntity<?> login(@RequestParam(value = "login_name") String userName,
                                    @RequestParam("password") String password,
                                    @RequestParam("client_id") String clientId) {
-        JsonObject response = new JsonObject();
+        String requestId = UUID.randomUUID().toString();
         try {
             String loginUserStr = authUserService.login(userName, password, clientId);
             if (Objects.nonNull(loginUserStr)) {
                 JsonObject loginUserJson = gson.fromJson(loginUserStr, JsonObject.class);
                 if (loginUserJson.has("err_code") && loginUserJson.get("err_code").getAsInt() == 0) {
-                    response.addProperty("result_code", "success");
                     loginUserJson.remove("err_code");
-                    response.add("data", loginUserJson);
+                    return toSuccessResponseEntity(requestId, loginUserJson);
                 } else {
-                    response.addProperty("result_code", "login_fail");
-                    response.addProperty("display_message", loginUserJson.get("message").getAsString());
+                    return toResponseEntity(requestId, "login_fail", loginUserJson.get("message").getAsString());
                 }
-                return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            response.addProperty("result_code", "success");
-            return new ResponseEntity<>("xx", HttpStatus.OK);
+            return toResponseEntity(requestId, Constants.NOT_FOUND, String.format("userName:%s is not exist", userName));
         } catch (Exception ex) {
-            response.addProperty("result_code", "unknown_error");
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return toResponseEntity(requestId, Constants.UNKNOWN_ERROR, ex.getMessage());
         }
     }
 
-    private void toSuccessResponse(JsonObject response, AuthUser authUser) {
-        response.addProperty("result_code", "success");
-        JsonObject data = new JsonObject();
-        data.addProperty("token", "token");
-    }
 }
