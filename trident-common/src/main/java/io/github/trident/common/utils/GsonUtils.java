@@ -49,6 +49,7 @@ public class GsonUtils {
                     return false;
                 }
             })
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @projectName: trident
@@ -29,12 +30,11 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("/api/1/user")
-public class AuthUserController {
+public class AuthUserController extends ApiBaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthUserController.class);
     @DubboReference(lazy = true, timeout = 300000)
     private AuthUserService authUserService;
-    @Autowired
-    Gson gson;
+
 
     /**
      * curl "http://localhost:8078/api/1/user/create" -XPOST
@@ -44,6 +44,7 @@ public class AuthUserController {
      */
     @PostMapping(path = {"/create"})
     public ResponseEntity<?> create(JsonObject user) {
+        String requestId = UUID.randomUUID().toString();
         LOGGER.info("user:{}", user);
         AuthUser authUser = new AuthUser();
         authUser.setLoginName("admin");
@@ -52,7 +53,7 @@ public class AuthUserController {
         authUserService.create(authUser);
         JsonObject response = new JsonObject();
         response.addProperty("result_code", "success");
-        return new ResponseEntity<>("xx", HttpStatus.OK);
+        return toSuccessResponseEntity(requestId);
     }
 
     /**
