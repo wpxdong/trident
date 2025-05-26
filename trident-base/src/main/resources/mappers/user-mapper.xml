@@ -95,4 +95,23 @@
     <update id="updateUserLastLoginDate" parameterType="long">
         UPDATE AUTH_USER SET LAST_LOGIN = sysdate() WHERE ID = #{id}
     </update>
+
+    <!-- 更新失败次数 -->
+    <update id="updateErrorTimes" parameterType="string">
+        <![CDATA[
+	 		UPDATE AUTH_USER  SET ERROR_TIMES = ERROR_TIMES + 1 WHERE LOGIN_NAME =#{loginName,jdbcType=VARCHAR}
+	 	]]>
+    </update>
+
+    <select id="queryErrorTimes" parameterType="string" resultType="int">
+        <![CDATA[
+	 		SELECT ERROR_TIMES FROM AUTH_USER T WHERE LOGIN_NAME=#{loginName,jdbcType=VARCHAR}
+	 	]]>
+    </select>
+
+    <insert id="insertUserLastErrTime" parameterType="string">
+        <![CDATA[
+			UPDATE AUTH_USER T SET LAST_ERR_TIME = SYSDATE() WHERE LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+		]]>
+    </insert>
 </mapper>

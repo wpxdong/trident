@@ -31,7 +31,7 @@ public class ApiBaseController {
     protected ResponseEntity<?> toResponseEntity(String requestId, String resultCode, String displayMessage) {
         JsonObject response = baseResponse(requestId, resultCode);
         response.addProperty("display_msg", displayMessage);
-        return new ResponseEntity<>(requestId, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     private JsonObject baseResponse(String requestId, String resultCode) {

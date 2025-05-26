@@ -21,4 +21,10 @@ public interface AuthUserMapper {
     void updateUserLastLoginDate(@Param("id") Long id);
 
     AuthUser selectByUserName(@Param("loginName") String loginName);
+
+    boolean updateErrorTimes(@Param("loginName") String loginName);
+
+    Integer queryErrorTimes(@Param("loginName") String loginName);
+
+    public boolean insertUserLastErrTime(@Param("loginName") String loginName);
 }
