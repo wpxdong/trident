@@ -1,7 +1,9 @@
 package io.github.trident.api.service.shiro;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import io.github.trident.api.service.PermissionService;
-import io.github.trident.api.service.UserService;
+import io.github.trident.base.login.AuthUserService;
 import io.github.trident.common.model.UserInfo;
 import io.github.trident.common.utils.JwtUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,8 +30,9 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     PermissionService permissionService;
     @Autowired
-    UserService userService;
-
+    AuthUserService userService;
+    @Autowired
+    Gson gson;
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof BearerToken;
@@ -59,23 +62,23 @@ public class ShiroRealm extends AuthorizingRealm {
         if (StringUtils.isEmpty(userName)) {
             throw new AuthenticationException("userName is null");
         }
-//        DashboardUserVO dashboardUserVO = dashboardUserService.findByUserName(userName);
-//        if (Objects.isNull(dashboardUserVO)) {
-//            throw new AuthenticationException(String.format("userName(%s) can not be found.", userName));
-//        }
+        String userVO = userService.findByUserName(userName);
+        if (StringUtils.isEmpty(userVO)) {
+            throw new AuthenticationException(String.format("userName(%s) can not be found.", userName));
+        }
+        JsonObject userInfo = gson.fromJson(userVO, JsonObject.class);
         String clientIdFromToken = JwtUtils.getClientId(token);
-//        if (StringUtils.isNotEmpty(clientIdFromToken)
-//                && StringUtils.isNotEmpty(dashboardUserVO.getClientId())
-//                && !StringUtils.equals(dashboardUserVO.getClientId(), clientIdFromToken)) {
-//            throw new AuthenticationException("clientId is invalid or does not match");
-//        }
-//        if (!JwtUtils.verifyToken(token, dashboardUserVO.getPassword())) {
-        if(!JwtUtils.verifyToken(token, "jwt-token")) {
+        if (StringUtils.isNotEmpty(clientIdFromToken)
+                && userInfo.has("client_id")
+                && !StringUtils.equals(userInfo.get("client_id").getAsString(), clientIdFromToken)) {
+            throw new AuthenticationException("clientId is invalid or does not match");
+        }
+        if(!JwtUtils.verifyToken(token, userInfo.get("password").getAsString())) {
             throw new AuthenticationException("token is error");
         }
         return new SimpleAuthenticationInfo(UserInfo.builder()
                 .userName(userName)
-                .userId("11111")
+                .userId(userInfo.get("id").getAsString())
                 .build(), token, this.getName());
     }
 }

@@ -1,6 +1,7 @@
 package io.github.trident.api.config;
 
 import io.github.trident.api.config.properties.ShiroProperties;
+import io.github.trident.api.filter.StatelessAuthFilter;
 import jakarta.servlet.Filter;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;

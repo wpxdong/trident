@@ -5,6 +5,7 @@
 <mapper namespace="io.github.trident.base.authorization.mapper.AuthUserMapper">
     <resultMap id="userResultMap" type="io.github.trident.common.domain.authorization.AuthUser">
         <id property="id" column="id"/>
+        <result property="clientId" column="CLIENT_ID"/>
         <result property="errorTimes" column="ERROR_TIMES"/>
         <result property="lastErrTime" column="LAST_ERR_TIME"/>
         <result property="loginName" column="LOGIN_NAME"/>
@@ -52,13 +53,13 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, LOGIN_NAME, PASSWORD,ERROR_TIMES,LAST_ERR_TIME,
-        LAST_LOGIN, STATUS, INVALID_DATE, VALID_DATE, CREATE_USER, CREATE_DATE, MODIFY_USER, MODIFY_DATE,EMP_CODE
+        LAST_LOGIN, STATUS, INVALID_DATE, VALID_DATE, CREATE_USER, CREATE_DATE, MODIFY_USER, MODIFY_DATE,EMP_CODE,CLIENT_ID
     </sql>
 
     <insert id="insertUser" parameterType="io.github.trident.common.domain.authorization.AuthUser">
         <![CDATA[
-       INSERT INTO AUTH_USER (id,LOGIN_NAME, PASSWORD,LAST_LOGIN, STATUS, INVALID_DATE, VALID_DATE, CREATE_USER, CREATE_DATE, MODIFY_USER, MODIFY_DATE)
-       values (#{id},#{loginName}, #{password}, #{lastLogin}, #{status}, #{invalidDate}, #{validDate}, #{createUser}, #{createDate}, #{modifyUser}, #{modifyDate})
+       INSERT INTO AUTH_USER (id,LOGIN_NAME, PASSWORD,LAST_LOGIN, STATUS, INVALID_DATE, VALID_DATE, CREATE_USER, CREATE_DATE, MODIFY_USER, MODIFY_DATE, CLIENT_ID)
+       values (#{id},#{loginName}, #{password}, #{lastLogin}, #{status}, #{invalidDate}, #{validDate}, #{createUser}, #{createDate}, #{modifyUser}, #{modifyDate}, #{clientId})
        ]]>
     </insert>
 

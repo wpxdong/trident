@@ -1,15 +1,14 @@
 package io.github.trident.api.controller;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.github.trident.api.Constants;
 import io.github.trident.base.login.AuthUserService;
 import io.github.trident.common.domain.authorization.AuthUser;
+import io.github.trident.common.model.UserInfo;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,14 +30,14 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/1/user")
-public class AuthUserController extends ApiBaseController {
+public class AuthUserController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthUserController.class);
     @DubboReference(lazy = true, timeout = 300000)
     private AuthUserService authUserService;
 
 
     /**
-     * curl "http://localhost:8078/api/1/user/create" -XPOST
+     * curl "http://localhost:8078/api/1/user/create" -XPOST -H "X-Access-Token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImFkbWluIiwiY2xpZW50SWQiOiI4MDAwIiwiZXhwIjoxNzUxMjYyMjM2fQ.axg6CUD7OJ2uirHt_dfX6FNggrp0hvFQE6pS3PUfyM8"
      *
      * @param user
      * @return

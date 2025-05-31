@@ -11,7 +11,6 @@ import io.github.trident.common.utils.JwtUtils;
 import io.github.trident.common.utils.SnowFlake;
 import jakarta.validation.constraints.NotNull;
 import org.apache.dubbo.config.annotation.DubboService;
-import org.apache.dubbo.rpc.protocol.tri.rest.openapi.model.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -42,7 +42,7 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
     SecretProperties secretProperties;
     @Autowired
     AuthUserMapper authUserMapper;
-    @Value("${expired_seconds:6000}")
+    @Value("${expired_seconds:2592000000}")
     Long expiredSeconds;
     @Value("${third_min:30}")
     int thirdMin;
@@ -74,14 +74,10 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
     public String login(String userName, String password, String clientId) {
         JsonObject response = new JsonObject();
         if (Objects.isNull(userName)) {
-            response.addProperty("err_code", 1);
-            response.addProperty("message", "UserNameIsNull");
-            return gson.toJson(response);
+            return gson.toJson(setErrResponse(1, "UserNameIsNull"));
         }
         if (Objects.isNull(password)) {
-            response.addProperty("err_code", 1);
-            response.addProperty("message", "LoginPasswordIsNull");
-            return gson.toJson(response);
+            return gson.toJson(setErrResponse(1, "LoginPasswordIsNull"));
         }
         //前端加密上传密码
 //        AesUtils.cbcDecrypt(secretProperties.getKey(), secretProperties.getIv(), password);
@@ -101,7 +97,7 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
                     cleanUserError(authUser.getLoginName());
                 }
             } else {
-                return gson.toJson( setErrResponse(1, "CurrentAccountLocked"));
+                return gson.toJson(setErrResponse(1, "CurrentAccountLocked"));
             }
             if (!pwdSha512.equals(authUser.getPassword())) {
                 if (validateTimes(authUser.getLoginName())) {
@@ -114,12 +110,13 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
 
             cleanUserError(authUser.getLoginName());
             response.addProperty("err_code", "0");
-            response.addProperty("token", JwtUtils.generateToken(authUser.getLoginName(), authUser.getPassword(), clientId, 10L));
-            response.addProperty("expired_time", expiredSeconds);
+            response.addProperty("token", JwtUtils.generateToken(authUser.getLoginName(), authUser.getPassword(), clientId, expiredSeconds));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            response.addProperty("expired_time", sdf.format(new Date(System.currentTimeMillis() + expiredSeconds)));
             authUser.setLastLogin(new Date());
             authUserMapper.updateUserLastLoginDate(authUser.getId());
         } else {
-            return gson.toJson(setErrResponse(1,"UserIsNull"));
+            return gson.toJson(setErrResponse(1, "UserIsNull"));
         }
         return gson.toJson(response);
     }
@@ -132,6 +129,15 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
     @Override
     public boolean checkUserPassword(String userId) {
         return false;
+    }
+
+    @Override
+    public String findByUserName(String userName) {
+        AuthUser authUser = authUserMapper.selectByUserName(userName);
+        if (Objects.nonNull(authUser)) {
+            return gson.toJson(authUser);
+        }
+        return "";
     }
 
     /**

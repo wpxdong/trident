@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 @Component
-public class ApiBaseController {
+public class ApiController {
     @Autowired
     protected Gson gson;
 

@@ -6,13 +6,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import io.github.trident.common.model.UserInfo;
 import org.apache.dubbo.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.Optional;
-
+import org.apache.shiro.SecurityUtils;
 /**
  * @projectName: trident
  * @package: io.github.trident.common.utils
@@ -27,6 +28,10 @@ public final class JwtUtils {
     private static final long TOKEN_EXPIRE_SECONDS = 24 * 60 * 60 * 1000L;
 
     private JwtUtils() {
+    }
+
+    public static UserInfo getUserInfo() {
+        return (UserInfo) SecurityUtils.getSubject().getPrincipal();
     }
 
     public static String generateToken(final String userName, final String key, final String clientId) {
@@ -68,8 +73,10 @@ public final class JwtUtils {
     }
 
     public static void main(String[] args) {
-        String KEY = "jwt-token";
-        String token = generateToken("frank.wu",KEY,"1111");
-        System.out.println(getIssuer("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1c2VyTmFtZSIsImlhdCI6MTYxMTU5MDUwOH0.yAuGpmg1DSYNryZQQA6d66HO87E8eWAFLJVhYscx8K8"));
+        String KEY = "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413";
+        String token = generateToken("admin", KEY, "8000", 2592000000L);
+        System.out.println(token);
+        System.out.println(verifyToken(token, KEY));
+        System.out.println(getIssuer(token));
     }
 }

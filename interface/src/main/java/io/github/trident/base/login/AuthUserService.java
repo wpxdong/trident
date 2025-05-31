@@ -13,4 +13,6 @@ public interface AuthUserService {
     int modifyPassword(final UserModifyPasswordDTO userModifyPasswordDTO);
 
     boolean checkUserPassword(final String userId);
+
+    String findByUserName(final String userName);
 }

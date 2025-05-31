@@ -1,5 +1,6 @@
 package io.github.trident.common.domain.authorization;
 
+import com.google.gson.annotations.Expose;
 import io.github.trident.common.domain.BaseEntity;
 import io.github.trident.common.domain.organization.Employee;
 
@@ -17,6 +18,7 @@ import java.util.Set;
  * @version: 1.0
  */
 public class AuthUser extends BaseEntity {
+
     //职员对象
     private Employee empCode;
 
@@ -60,7 +62,6 @@ public class AuthUser extends BaseEntity {
     public Set<String> getAccessUris() {
         return accessUris;
     }
-
     public void setAccessUris(Set<String> accessUris) {
         this.accessUris = accessUris;
     }
