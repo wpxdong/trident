@@ -13,6 +13,7 @@
         <module>trident-common</module>
         <module>trident-base</module>
         <module>interface</module>
+        <module>triden-customer</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
