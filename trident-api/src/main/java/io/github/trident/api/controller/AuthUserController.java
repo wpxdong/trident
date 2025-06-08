@@ -2,11 +2,10 @@ package io.github.trident.api.controller;
 
 import com.google.gson.JsonObject;
 import io.github.trident.api.Constants;
-import io.github.trident.base.login.AuthUserService;
+import io.github.trident.base.login.IAuthUserService;
 import io.github.trident.common.domain.authorization.AuthUser;
-import io.github.trident.common.model.UserInfo;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +29,10 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/1/user")
-public class AuthUserController extends ApiController {
+public class AuthUserController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthUserController.class);
     @DubboReference(lazy = true, timeout = 300000)
-    private AuthUserService authUserService;
+    private IAuthUserService authUserService;
 
 
     /**
@@ -43,6 +42,7 @@ public class AuthUserController extends ApiController {
      * @return
      */
     @PostMapping(path = {"/create"})
+    @RequiresPermissions("system:manager:list")
     public ResponseEntity<?> create(JsonObject user) {
         String requestId = UUID.randomUUID().toString();
         LOGGER.info("user:{}", user);

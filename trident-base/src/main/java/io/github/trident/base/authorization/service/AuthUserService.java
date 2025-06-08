@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.github.trident.base.authorization.mapper.AuthUserMapper;
 import io.github.trident.base.config.properties.SecretProperties;
+import io.github.trident.base.login.IAuthUserService;
 import io.github.trident.common.domain.authorization.AuthUser;
 import io.github.trident.common.model.dto.UserModifyPasswordDTO;
 import io.github.trident.common.utils.DigestUtils;
 import io.github.trident.common.utils.JwtUtils;
+import io.github.trident.common.utils.ResponseUtils;
 import io.github.trident.common.utils.SnowFlake;
 import jakarta.validation.constraints.NotNull;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -36,7 +38,7 @@ import java.util.Objects;
 
 @DubboService
 @Service
-public class AuthUserService implements io.github.trident.base.login.AuthUserService {
+public class AuthUserService implements IAuthUserService {
     private static final Logger logger = LoggerFactory.getLogger(AuthUserService.class);
     @Autowired
     SecretProperties secretProperties;
@@ -74,10 +76,10 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
     public String login(String userName, String password, String clientId) {
         JsonObject response = new JsonObject();
         if (Objects.isNull(userName)) {
-            return gson.toJson(setErrResponse(1, "UserNameIsNull"));
+            return gson.toJson(ResponseUtils.setErrResponse(1, "UserNameIsNull"));
         }
         if (Objects.isNull(password)) {
-            return gson.toJson(setErrResponse(1, "LoginPasswordIsNull"));
+            return gson.toJson(ResponseUtils.setErrResponse(1, "LoginPasswordIsNull"));
         }
         //前端加密上传密码
 //        AesUtils.cbcDecrypt(secretProperties.getKey(), secretProperties.getIv(), password);
@@ -87,7 +89,7 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
             String pwdSha512 = DigestUtils.sha512Hex(password);
             // 用户已经被禁用
             if (Objects.isNull(authUser.getStatus()) || authUser.getStatus() == 0) {
-                setErrResponse(1, "UserIsDisable");
+                ResponseUtils.setErrResponse(1, "UserIsDisable");
                 return gson.toJson(response);
             }
             // 账号锁定功能
@@ -97,13 +99,13 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
                     cleanUserError(authUser.getLoginName());
                 }
             } else {
-                return gson.toJson(setErrResponse(1, "CurrentAccountLocked"));
+                return gson.toJson(ResponseUtils.setErrResponse(1, "CurrentAccountLocked"));
             }
             if (!pwdSha512.equals(authUser.getPassword())) {
                 if (validateTimes(authUser.getLoginName())) {
-                    return gson.toJson(setErrResponse(1, "TryMoreThanTimes"));
+                    return gson.toJson(ResponseUtils.setErrResponse(1, "TryMoreThanTimes"));
                 }
-                response = setErrResponse(1, String.format("LoginPasswordIsError, you have %d times to try  times",
+                response =ResponseUtils. setErrResponse(1, String.format("LoginPasswordIsError, you have %d times to try  times",
                         RemainingTimes - authUserMapper.queryErrorTimes(authUser.getLoginName())));
                 return gson.toJson(response);
             }
@@ -116,7 +118,7 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
             authUser.setLastLogin(new Date());
             authUserMapper.updateUserLastLoginDate(authUser.getId());
         } else {
-            return gson.toJson(setErrResponse(1, "UserIsNull"));
+            return gson.toJson(ResponseUtils.setErrResponse(1, "UserIsNull"));
         }
         return gson.toJson(response);
     }
@@ -179,10 +181,5 @@ public class AuthUserService implements io.github.trident.base.login.AuthUserSer
         return loginErrTimes >= RemainingTimes;
     }
 
-    private JsonObject setErrResponse(Integer errCode, String message) {
-        JsonObject response = new JsonObject();
-        response.addProperty("err_code", errCode);
-        response.addProperty("message", "UserIsNull");
-        return response;
-    }
+
 }

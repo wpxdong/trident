@@ -1,11 +1,13 @@
-package io.github.trident.common.service.base;
+package io.github.trident.base.organization;
 
 import io.github.trident.common.domain.organization.Employee;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
-public interface IEmpolyeeService {
+public interface IEmployeeService {
+    String persist(Employee employee, String requestId, Locale locale);
     /**
      * 查找符合条件的所有员工信息
      *

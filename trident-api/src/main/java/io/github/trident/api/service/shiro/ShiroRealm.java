@@ -3,10 +3,11 @@ package io.github.trident.api.service.shiro;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.github.trident.api.service.PermissionService;
-import io.github.trident.base.login.AuthUserService;
+import io.github.trident.base.login.IAuthUserService;
 import io.github.trident.common.model.UserInfo;
 import io.github.trident.common.utils.JwtUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
@@ -15,6 +16,10 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @projectName: trident
@@ -30,7 +35,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     PermissionService permissionService;
     @Autowired
-    AuthUserService userService;
+    IAuthUserService userService;
     @Autowired
     Gson gson;
     @Override
@@ -40,16 +45,27 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        principalCollection.getPrimaryPrincipal();
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        UserInfo userInfo = (UserInfo) principalCollection.getPrimaryPrincipal();
+//        Set<String> permissions = permissionService.getAuthPermByUserName(userInfo.getUserName());
+//        if (CollectionUtils.isEmpty(permissions)) {
+//            return null;
+//        }
 
-        return null;
+
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        Set<String> permissions = new HashSet<>();
+//        simpleAuthorizationInfo.setRoles(permissionService.getRolesByUserId("1"));
+        simpleAuthorizationInfo.setStringPermissions(permissions);
+        return simpleAuthorizationInfo;
     }
 
     @Override
     protected boolean isPermitted(Permission permission, AuthorizationInfo info) {
-//        return super.isPermitted(permission, info);
-        return true;
+        UserInfo userInfo = (UserInfo) SecurityUtils.getSubject().getPrincipal();
+        if (Objects.nonNull(userInfo) && "admin".equals(userInfo.getUserName())) {
+            return true;
+        }
+        return super.isPermitted(permission, info);
     }
 
     @Override

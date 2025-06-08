@@ -1,32 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="io.github.trident.base.mapper.EmployeeMapper">
+<mapper namespace="io.github.trident.base.organization.mapper.EmployeeMapper">
     <resultMap id="employeeResultMap" type="io.github.trident.common.domain.organization.Employee">
-        <id property="id" column="ID" />
-<!--        <result property="deptId" column="DEPT_ID" />-->
-        <result property="empCode" column="EMP_CODE" />
-        <result property="empName" column="EMP_NAME" />
-        <result property="gender" column="GENDER" />
-        <result property="birthdate" column="BIRTHDATE" />
-        <result property="status" column="STATUS" />
-        <result property="inDate" column="IN_DATE" />
-        <result property="outDate" column="OUT_DATE" />
-        <result property="offerTel" column="OFFICE_TEL" />
-        <result property="offerAddress" column="OFFICE_ADDRESS" />
-        <result property="offerZipCode" column="OFFICE_EMAIL" />
-        <result property="offerEmail" column="OFFICE_EMAIL" />
-        <result property="mobileNumber" column="MOBILE_NO" />
-        <result property="homeAddress" column="PERSON_EMAIL" />
-        <result property="personEmail" column="PERSON_EMAIL" />
-        <result property="remark" column="_REMARK" />
+        <id property="id" column="ID"/>
+        <!--        <result property="deptId" column="DEPT_ID" />-->
+        <result property="empCode" column="EMP_CODE"/>
+        <result property="empName" column="EMP_NAME"/>
+        <result property="gender" column="GENDER"/>
+        <result property="birthdate" column="BIRTHDATE"/>
+        <result property="status" column="STATUS"/>
+        <result property="inDate" column="IN_DATE"/>
+        <result property="outDate" column="OUT_DATE"/>
+        <result property="offerTel" column="OFFICE_TEL"/>
+        <result property="offerAddress" column="OFFICE_ADDRESS"/>
+        <result property="offerEmail" column="OFFICE_EMAIL"/>
+        <result property="mobileNumber" column="MOBILE_NO"/>
+        <result property="homeAddress" column="PERSON_EMAIL"/>
+        <result property="personEmail" column="PERSON_EMAIL"/>
+        <result property="remark" column="_REMARK"/>
         <result property="createUser" column="CREATE_USER"
-                javaType="String" jdbcType="VARCHAR" />
+                javaType="String" jdbcType="VARCHAR"/>
         <result property="createDate" column="CREATE_DATE"
-                javaType="Date" jdbcType="TIMESTAMP" />
+                javaType="Date" jdbcType="TIMESTAMP"/>
         <result property="modifyUser" column="MODIFY_USER"
-                javaType="String" jdbcType="VARCHAR" />
+                javaType="String" jdbcType="VARCHAR"/>
         <result property="modifyDate" column="MODIFY_DATE"
-                javaType="Date" jdbcType="TIMESTAMP" />
+                javaType="Date" jdbcType="TIMESTAMP"/>
         <result property="position" column="POSITION" jdbcType="VARCHAR"/>
     </resultMap>
+    <sql id="Base_Column_List">
+        ID, EMP_CODE, EMP_NAME, GENDER, BIRTHDATE, STATUS, IN_DATE, OUT_DATE, OFFICE_TEL, OFFICE_ADDRESS, OFFICE_EMAIL,
+        MOBILE_NO, PERSON_EMAIL, REMARK, CREATE_USER, CREATE_DATE, MODIFY_USER, MODIFY_DATE,POSITION
+    </sql>
+    <select id="selectEmployeeByEmpCode" parameterType="java.lang.String" resultMap="employeeResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from employee
+        where EMP_CODE = #{empCode}
+    </select>
+    <insert id="insertEmployee" parameterType="io.github.trident.common.domain.organization.Employee">
+        insert into employee (EMP_CODE, EMP_NAME, GENDER, BIRTHDATE, STATUS, IN_DATE, OUT_DATE, OFFICE_TEL,
+        OFFICE_ADDRESS, OFFICE_EMAIL, MOBILE_NO, PERSON_EMAIL, _REMARK, CREATE_USER, CREATE_DATE, MODIFY_USER,
+        MODIFY_DATE,POSITION）
+        values (#{empCode}, #{empName}, #{gender}, #{birthdate}, #{status}, #{inDate}, #{outDate}, #{offerTel},
+        #{offerAddress}, #{offerEmail}, #{mobileNumber}, #{homeAddress}, #{personEmail}, #{remark}, #{createUser},
+        #{createDate}, #{modifyUser}, #{modifyDate},#{position})
+    </insert>
+    <update id="updateEmployee" parameterType="io.github.trident.common.domain.organization.Employee">
+        update employee
+        <if test="empCode != null">
+            set EMP_CODE = #{empCode},
+        </if>
+        <if test="empName != null">
+            EMP_NAME = #{empName},
+        </if>
+        <if test="gender != null">
+            GENDER = #{gender},
+        </if>
+        <if test="birthdate != null">
+            BIRTHDATE = #{birthdate},
+        </if>
+        <if test="status!= null">
+            STATUS = #{status},
+        </if>
+        <if test="inDate!= null">
+            IN_DATE = #{inDate},
+        </if>
+        <if test="outDate!= null">
+            OUT_DATE = #{outDate},
+        </if>
+        <if test="offerTel!= null">
+            OFFICE_TEL = #{offerTel},
+        </if>
+        <if test="offerAddress!= null">
+            OFFICE_ADDRESS = #{offerAddress},
+        </if>
+        <if test="offerEmail!= null">
+            OFFICE_EMAIL = #{offerEmail},
+        </if>
+        <if test="mobileNumber!= null">
+            MOBILE_NO = #{mobileNumber},
+        </if>
+        <if test="homeAddress!= null">
+            PERSON_EMAIL = #{homeAddress},
+        </if>
+        <if test="personEmail!= null">
+            PERSON_EMAIL = #{personEmail},
+        </if>
+        <if test="remark!= null">
+            _REMARK = #{remark},
+        </if>
+        <if test="modifyUser!= null">
+            MODIFY_USER = #{modifyUser},
+        </if>
+        <if test="modifyDate!= null">
+            MODIFY_DATE = #{modifyDate},
+        </if>
+        <if test="position!= null">
+            POSITION = #{position},
+        </if>
+        where ID = #{id}
+    </update>
 </mapper>

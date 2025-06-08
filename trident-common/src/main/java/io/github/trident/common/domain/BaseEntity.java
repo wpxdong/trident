@@ -13,17 +13,17 @@ import java.util.Date;
  * @version: 1.0
  */
 public class BaseEntity implements Serializable {
-    protected long id;
+    protected Long id;
     protected String createUser;
     protected Date createDate;
     protected String modifyUser;
     protected Date modifyDate;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

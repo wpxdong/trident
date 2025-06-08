@@ -1,5 +1,7 @@
 package io.github.trident.common.domain.organization;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import io.github.trident.common.domain.BaseEntity;
 
 import java.util.Date;
@@ -17,36 +19,50 @@ public class Employee extends BaseEntity {
     //部门实体
     private Department deptId;
     //职员编号
+    @SerializedName("emp_code")
     private String empCode;
     //人员姓名
+    @SerializedName("emp_name")
     private String empName;
     //性别
+    @SerializedName("gender")
     private Boolean gender;
     //生日
     private Date birthdate;
     //状态（在职/离职）
     private Boolean status;
     //入职日期
+    @SerializedName("in_date")
     private Date inDate;
     //离职日期
+    @SerializedName("out_date")
     private Date outDate;
     //办公电话
+    @SerializedName("offer_tel")
     private String offerTel;
     //办公地址
+    @SerializedName("offer_address")
     private String offerAddress;
     //办公邮编
+    @SerializedName("offer_zip")
     private String offerEmail;
     //手机号码
+    @SerializedName("mobile_number")
     private String mobileNumber;
     //家庭电话
+    @SerializedName("home_tel")
     private String homeTel;
     //家庭地址
+    @SerializedName("home_address")
     private String homeAddress;
     //私人邮箱
+    @SerializedName("person_email")
     private String personEmail;
     //工作描述
+    @SerializedName("work_exp")
     private String workExp;
     //备注
+    @SerializedName("remark")
     private String remark;
     //职位
     private String position;
