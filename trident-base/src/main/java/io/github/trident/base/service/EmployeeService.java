@@ -1,10 +1,10 @@
-package io.github.trident.base.organization.service;
+package io.github.trident.base.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.github.trident.base.exception.EmployeeException;
 import io.github.trident.base.organization.IEmployeeService;
-import io.github.trident.base.organization.mapper.EmployeeMapper;
+import io.github.trident.base.mapper.EmployeeMapper;
 import io.github.trident.common.domain.organization.Employee;
 import io.github.trident.common.utils.ResponseUtils;
 import jakarta.validation.constraints.NotNull;
@@ -44,25 +44,26 @@ public class EmployeeService implements IEmployeeService {
     public String persist(@NotNull Employee employee, String requestId, Locale locale) {
         JsonObject result = new JsonObject();
         if (Objects.isNull(employee)) {
-            getLocalizedMessage(EmployeeException.IS_NULL_ERROR_CODE, locale);
-            return gson.toJson(ResponseUtils.setErrResponse(1, EmployeeException.IS_NULL_ERROR_CODE));
+            return gson.toJson(ResponseUtils.setErrResponse(1, getLocalizedMessage(EmployeeException.IS_NULL_ERROR_CODE, locale)));
         }
-        // update
-        if (Objects.nonNull(employee.getId())) {
-            employee.setModifyDate(new Date());
-            employeeMapper.updateEmployee(employee);
-        } else {
-            if (StringUtils.isNoneEmpty(employee.getEmpCode())) {
-                Employee employeeOld = employeeMapper.selectEmployeeByEmpCode(employee.getEmpCode());
-                if (Objects.nonNull(employeeOld.getEmpCode())) {
-                    return gson.toJson(ResponseUtils.setErrResponse(1, EmployeeException.IS_EXIST_ERROR_CODE));
+        try {
+            if (Objects.nonNull(employee.getId())) {
+                employee.setModifyDate(new Date());
+                employeeMapper.updateEmployee(employee);
+            } else {
+                if (StringUtils.isNoneEmpty(employee.getEmpCode())) {
+                    Employee employeeOld = employeeMapper.selectEmployeeByEmpCode(employee.getEmpCode());
+                    if (Objects.nonNull(employeeOld) && Objects.nonNull(employeeOld.getEmpCode())) {
+                        return gson.toJson(ResponseUtils.setErrResponse(1, EmployeeException.UNkNOWN_EXCEPTION));
+                    }
                 }
+                employee.setCreateDate(new Date());
+                employeeMapper.insertEmployee(employee);
             }
-            employee.setCreateDate(new Date());
-            employeeMapper.insertEmployee(employee);
+            return gson.toJson(ResponseUtils.setSuccessResponse());
+        } catch (Exception ex) {
+            return gson.toJson(ResponseUtils.setErrResponse(1, getLocalizedMessage(EmployeeException.IS_NULL_ERROR_CODE, locale)));
         }
-
-        return gson.toJson(ResponseUtils.setSuccessResponse());
     }
 
     @Override

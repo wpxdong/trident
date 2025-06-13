@@ -26,11 +26,11 @@ public class Employee extends BaseEntity {
     private String empName;
     //性别
     @SerializedName("gender")
-    private Boolean gender;
+    private Integer gender;
     //生日
     private Date birthdate;
     //状态（在职/离职）
-    private Boolean status;
+    private Integer status;
     //入职日期
     @SerializedName("in_date")
     private Date inDate;
@@ -38,17 +38,17 @@ public class Employee extends BaseEntity {
     @SerializedName("out_date")
     private Date outDate;
     //办公电话
-    @SerializedName("offer_tel")
-    private String offerTel;
+    @SerializedName("office_tel")
+    private String officeTel;
     //办公地址
-    @SerializedName("offer_address")
-    private String offerAddress;
+    @SerializedName("office_address")
+    private String officeAddress;
     //办公邮编
-    @SerializedName("offer_zip")
-    private String offerEmail;
+    @SerializedName("office_zip")
+    private String officeEmail;
     //手机号码
-    @SerializedName("mobile_number")
-    private String mobileNumber;
+    @SerializedName("mobile_no")
+    private String mobileNo;
     //家庭电话
     @SerializedName("home_tel")
     private String homeTel;
@@ -99,11 +99,11 @@ public class Employee extends BaseEntity {
         this.empName = empName;
     }
 
-    public Boolean getGender() {
+    public Integer getGender() {
         return this.gender;
     }
 
-    public void setGender(Boolean gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
@@ -115,11 +115,11 @@ public class Employee extends BaseEntity {
         this.birthdate = birthdate;
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return this.status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -139,37 +139,36 @@ public class Employee extends BaseEntity {
         this.outDate = outDate;
     }
 
-    public String getOfferTel() {
-        return this.offerTel;
+    public String getOfficeTel() {
+        return officeTel;
     }
 
-    public void setOfferTel(String offerTel) {
-        this.offerTel = offerTel;
+    public void setOfficeTel(String officeTel) {
+        this.officeTel = officeTel;
     }
 
-    public String getOfferAddress() {
-        return this.offerAddress;
+    public String getOfficeAddress() {
+        return officeAddress;
     }
 
-    public void setOfferAddress(String offerAddress) {
-        this.offerAddress = offerAddress;
+    public void setOfficeAddress(String officeAddress) {
+        this.officeAddress = officeAddress;
     }
 
-
-    public String getOfferEmail() {
-        return this.offerEmail;
+    public String getOfficeEmail() {
+        return officeEmail;
     }
 
-    public void setOfferEmail(String offerEmail) {
-        this.offerEmail = offerEmail;
+    public void setOfficeEmail(String officeEmail) {
+        this.officeEmail = officeEmail;
     }
 
-    public String getMobileNumber() {
-        return this.mobileNumber;
+    public String getMobileNo() {
+        return mobileNo;
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
     }
 
     public String getHomeTel() {

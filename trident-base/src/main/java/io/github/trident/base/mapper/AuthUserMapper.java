@@ -1,4 +1,4 @@
-package io.github.trident.base.authorization.mapper;
+package io.github.trident.base.mapper;
 
 import io.github.trident.common.domain.authorization.AuthUser;
 import org.apache.ibatis.annotations.Mapper;

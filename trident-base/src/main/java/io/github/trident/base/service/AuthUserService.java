@@ -1,8 +1,8 @@
-package io.github.trident.base.authorization.service;
+package io.github.trident.base.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import io.github.trident.base.authorization.mapper.AuthUserMapper;
+import io.github.trident.base.mapper.AuthUserMapper;
 import io.github.trident.base.config.properties.SecretProperties;
 import io.github.trident.base.login.IAuthUserService;
 import io.github.trident.common.domain.authorization.AuthUser;

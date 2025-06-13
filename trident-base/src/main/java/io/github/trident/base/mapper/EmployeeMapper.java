@@ -1,4 +1,4 @@
-package io.github.trident.base.organization.mapper;
+package io.github.trident.base.mapper;
 
 import io.github.trident.common.domain.organization.Employee;
 import org.apache.ibatis.annotations.Mapper;

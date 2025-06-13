@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="io.github.trident.base.authorization.mapper.AuthUserMapper">
+<mapper namespace="io.github.trident.base.mapper.AuthUserMapper">
     <resultMap id="userResultMap" type="io.github.trident.common.domain.authorization.AuthUser">
         <id property="id" column="id"/>
         <result property="clientId" column="CLIENT_ID"/>
