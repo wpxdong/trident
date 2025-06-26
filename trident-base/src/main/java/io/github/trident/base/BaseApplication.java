@@ -23,7 +23,6 @@ public class BaseApplication {
     final static CountDownLatch latch = new CountDownLatch(1);
 
     public static void main(String[] args) {
-       System.out.println(org.apache.commons.codec.digest.DigestUtils.sha512Hex("admin123"));
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {

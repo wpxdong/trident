@@ -2,12 +2,13 @@ package io.github.trident.base.mapper;
 
 import io.github.trident.common.domain.organization.BizDept;
 import io.github.trident.common.domain.organization.Department;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+@Mapper
 public interface DepartmentMapper {
     /**
      * @描述：通过部门标杆编码获取部门信息
@@ -82,7 +83,7 @@ public interface DepartmentMapper {
     /**
      * 保存对象
      */
-    void insert(Department department);
+    void insertDepartment(Department department);
 
     /**
      * 删除，通过id

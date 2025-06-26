@@ -5,6 +5,45 @@
 <mapper namespace="io.github.trident.base.mapper.DepartmentMapper">
     <resultMap id="departmentResultMap"
                type="io.github.trident.common.domain.organization.Department">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="leaf" column="LEAF"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="PHONE"/>
+        <result property="fax" column="fax"/>
+        <result property="address" column="PHONE"/>
+        <result property="status" column="STATUS"/>
+        <result property="companyName" column="COMPANY_NAME" />
+        <result property="validDate" column="VALID_DATE" />
+        <result property="invalidDate" column="INVALID_DATE" />
+        <result property="displayOrder" column="DISPLAY_ORDER" />
+        <result property="level" column="LEVEL" />
+        <result property="desc" column="DESC" />
+        <result property="seq" column="seq" />
+        <result property="principal" column="PRINCIPAL" />
+        <result property="principalName" column="PRINCIPAL_NAME" />
+        <result property="createUser" column="MASTER_CREATEUSER"
+                javaType="String" jdbcType="VARCHAR" />
+        <result property="createDate" column="MASTER_CREATEDATE"
+                javaType="Date" jdbcType="TIMESTAMP" />
+        <result property="modifyUser" column="MASTER_MODIFYUSER"
+                javaType="String" jdbcType="VARCHAR" />
+        <result property="modifyDate" column="MASTER_MODIFYDATE"
+                javaType="Date" jdbcType="TIMESTAMP" />
 
     </resultMap>
+    <sql id="Base_Column_List">
+        id, code, LEAF, name, PHONE, fax, ADDRESS, STATUS, COMPANY_NAME, VALID_DATE, INVALID_DATE, DISPLAY_ORDER, LEVEL, DESC, seq, PRINCIPAL, PRINCIPAL_NAME, MASTER_CREATEUSER, MASTER_CREATEDATE, MASTER_MODIFYUSER, MASTER_MODIFYDATE
+    </sql>
+    <select id="selectDepartmentByCode" parameterType="java.lang.String"
+            resultMap="departmentResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from department
+        where code = #{code}    </select>
+    <insert id="insertDepartment" parameterType="io.github.trident.common.domain.organization.Department">
+        insert into department (code, LEAF, name, PHONE, fax, ADDRESS, STATUS, COMPANY_NAME, VALID_DATE, INVALID_DATE, DISPLAY_ORDER, LEVEL, `DESC`, seq, PRINCIPAL, PRINCIPAL_NAME, CREATE_USER, CREATE_DATE, MODIFY_USER, MODIFY_DATE)
+        values
+        (#{code}, #{leaf, typeHandler=io.github.trident.base.util.BooleanIntTypeHandler}, #{name}, #{phone}, #{fax}, #{address}, #{status, typeHandler=io.github.trident.base.util.BooleanIntTypeHandler}, #{companyName}, #{validDate}, #{invalidDate}, #{displayOrder}, #{level}, #{desc}, #{seq}, #{principal}, #{principalName}, #{createUser}, #{createDate}, #{modifyUser}, #{modifyDate})
+    </insert>
 </mapper>

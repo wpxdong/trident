@@ -3,9 +3,10 @@ package io.github.trident.common.utils;
 import com.google.gson.JsonObject;
 
 public class ResponseUtils {
-    public static JsonObject setErrResponse(Integer errCode, String message) {
+    public static JsonObject setErrResponse(Integer errCode, String message, String apiCode) {
         JsonObject response = new JsonObject();
         response.addProperty("err_code", errCode);
+        response.addProperty("api_code", errCode);
         response.addProperty("message", message);
         return response;
     }

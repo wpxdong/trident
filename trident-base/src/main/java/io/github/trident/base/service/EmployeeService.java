@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import io.github.trident.base.exception.EmployeeException;
 import io.github.trident.base.organization.IEmployeeService;
 import io.github.trident.base.mapper.EmployeeMapper;
+import io.github.trident.base.util.Constants;
 import io.github.trident.common.domain.organization.Employee;
 import io.github.trident.common.utils.ResponseUtils;
 import jakarta.validation.constraints.NotNull;
@@ -44,7 +45,7 @@ public class EmployeeService implements IEmployeeService {
     public String persist(@NotNull Employee employee, String requestId, Locale locale) {
         JsonObject result = new JsonObject();
         if (Objects.isNull(employee)) {
-            return gson.toJson(ResponseUtils.setErrResponse(1, getLocalizedMessage(EmployeeException.IS_NULL_ERROR_CODE, locale)));
+            return gson.toJson(ResponseUtils.setErrResponse(1, Constants.INVALID_PARAM, getLocalizedMessage(EmployeeException.IS_NULL_ERROR_CODE, locale)));
         }
         try {
             if (Objects.nonNull(employee.getId())) {
@@ -54,7 +55,7 @@ public class EmployeeService implements IEmployeeService {
                 if (StringUtils.isNoneEmpty(employee.getEmpCode())) {
                     Employee employeeOld = employeeMapper.selectEmployeeByEmpCode(employee.getEmpCode());
                     if (Objects.nonNull(employeeOld) && Objects.nonNull(employeeOld.getEmpCode())) {
-                        return gson.toJson(ResponseUtils.setErrResponse(1, EmployeeException.UNkNOWN_EXCEPTION));
+                        return gson.toJson(ResponseUtils.setErrResponse(1,Constants.INVALID_PARAM, EmployeeException.UNkNOWN_EXCEPTION));
                     }
                 }
                 employee.setCreateDate(new Date());
@@ -62,7 +63,7 @@ public class EmployeeService implements IEmployeeService {
             }
             return gson.toJson(ResponseUtils.setSuccessResponse());
         } catch (Exception ex) {
-            return gson.toJson(ResponseUtils.setErrResponse(1, getLocalizedMessage(EmployeeException.IS_NULL_ERROR_CODE, locale)));
+            return gson.toJson(ResponseUtils.setErrResponse(1,Constants.INVALID_PARAM, getLocalizedMessage(EmployeeException.IS_NULL_ERROR_CODE, locale)));
         }
     }
 

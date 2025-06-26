@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import io.github.trident.base.organization.IEmployeeService;
 import io.github.trident.common.domain.organization.Employee;
 import io.github.trident.common.model.UserInfo;
-import org.apache.dubbo.common.logger.FluentLogger;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +33,7 @@ public class EmployeeController extends BaseController {
         employee.setCreateUser(userInfo.getUserName());
         String responseSvc =  employeeService.persist(employee, requestId, Locale.CHINA);
         JsonObject svcJson = gson.fromJson(responseSvc, JsonObject.class);
-        if (svcJson.has("code") && svcJson.get("code").getAsInt() == 0) {
+        if (svcJson.has("err_code") && svcJson.get("err_code").getAsInt() == 0) {
             return toSuccessResponseEntity(requestId);
         } else {
             return toSuccessResponseEntity(requestId, svcJson.get("message").getAsString());
@@ -63,7 +62,7 @@ public class EmployeeController extends BaseController {
         employee.setModifyUser(userInfo.getUserName());
         String responseSvc =  employeeService.persist(employee, requestId, Locale.CHINA);
         JsonObject svcJson = gson.fromJson(responseSvc, JsonObject.class);
-        if (svcJson.has("code") && svcJson.get("code").getAsInt() == 0) {
+        if (svcJson.has("err_code") && svcJson.get("err_code").getAsInt() == 0) {
             return toSuccessResponseEntity(requestId);
         } else {
             return toSuccessResponseEntity(requestId, svcJson.get("message").getAsString());
