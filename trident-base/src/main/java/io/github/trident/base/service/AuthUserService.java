@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import io.github.trident.base.mapper.AuthUserMapper;
 import io.github.trident.base.config.properties.SecretProperties;
 import io.github.trident.base.login.IAuthUserService;
+import io.github.trident.base.util.Constants;
 import io.github.trident.common.domain.authorization.AuthUser;
 import io.github.trident.common.model.dto.UserModifyPasswordDTO;
 import io.github.trident.common.utils.DigestUtils;
@@ -76,10 +77,10 @@ public class AuthUserService implements IAuthUserService {
     public String login(String userName, String password, String clientId) {
         JsonObject response = new JsonObject();
         if (Objects.isNull(userName)) {
-            return gson.toJson(ResponseUtils.setErrResponse(1, "UserNameIsNull"));
+            return gson.toJson(ResponseUtils.setErrResponse(1, Constants.INVALID_PARAM, "UserNameIsNull"));
         }
         if (Objects.isNull(password)) {
-            return gson.toJson(ResponseUtils.setErrResponse(1, "LoginPasswordIsNull"));
+            return gson.toJson(ResponseUtils.setErrResponse(1, Constants.INVALID_PARAM, "LoginPasswordIsNull"));
         }
         //前端加密上传密码
 //        AesUtils.cbcDecrypt(secretProperties.getKey(), secretProperties.getIv(), password);
@@ -89,7 +90,7 @@ public class AuthUserService implements IAuthUserService {
             String pwdSha512 = DigestUtils.sha512Hex(password);
             // 用户已经被禁用
             if (Objects.isNull(authUser.getStatus()) || authUser.getStatus() == 0) {
-                ResponseUtils.setErrResponse(1, "UserIsDisable");
+                ResponseUtils.setErrResponse(1, Constants.INVALID_PARAM, "UserIsDisable");
                 return gson.toJson(response);
             }
             // 账号锁定功能
@@ -99,13 +100,13 @@ public class AuthUserService implements IAuthUserService {
                     cleanUserError(authUser.getLoginName());
                 }
             } else {
-                return gson.toJson(ResponseUtils.setErrResponse(1, "CurrentAccountLocked"));
+                return gson.toJson(ResponseUtils.setErrResponse(1, Constants.INVALID_PARAM, "CurrentAccountLocked"));
             }
             if (!pwdSha512.equals(authUser.getPassword())) {
                 if (validateTimes(authUser.getLoginName())) {
-                    return gson.toJson(ResponseUtils.setErrResponse(1, "TryMoreThanTimes"));
+                    return gson.toJson(ResponseUtils.setErrResponse(1, Constants.INVALID_PARAM, "TryMoreThanTimes"));
                 }
-                response =ResponseUtils. setErrResponse(1, String.format("LoginPasswordIsError, you have %d times to try  times",
+                response = ResponseUtils.setErrResponse(1, Constants.INVALID_PARAM, String.format("LoginPasswordIsError, you have %d times to try  times",
                         RemainingTimes - authUserMapper.queryErrorTimes(authUser.getLoginName())));
                 return gson.toJson(response);
             }
@@ -118,7 +119,7 @@ public class AuthUserService implements IAuthUserService {
             authUser.setLastLogin(new Date());
             authUserMapper.updateUserLastLoginDate(authUser.getId());
         } else {
-            return gson.toJson(ResponseUtils.setErrResponse(1, "UserIsNull"));
+            return gson.toJson(ResponseUtils.setErrResponse(1, Constants.INVALID_PARAM, "UserIsNull"));
         }
         return gson.toJson(response);
     }

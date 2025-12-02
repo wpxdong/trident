@@ -42,8 +42,11 @@
         from department
         where code = #{code}    </select>
     <insert id="insertDepartment" parameterType="io.github.trident.common.domain.organization.Department">
-        insert into department (code, LEAF, name, PHONE, fax, ADDRESS, STATUS, COMPANY_NAME, VALID_DATE, INVALID_DATE, DISPLAY_ORDER, LEVEL, `DESC`, seq, PRINCIPAL, PRINCIPAL_NAME, CREATE_USER, CREATE_DATE, MODIFY_USER, MODIFY_DATE)
+        insert into department (code, LEAF, name, PHONE, fax, ADDRESS, STATUS, COMPANY_NAME, VALID_DATE, INVALID_DATE, DISPLAY_ORDER, LEVEL, `DESC`, seq, PRINCIPAL, PRINCIPAL_NAME, CREATE_USER, CREATE_DATE, MODIFY_USER, MODIFY_DATE,PARENT_CODE)
         values
-        (#{code}, #{leaf, typeHandler=io.github.trident.base.util.BooleanIntTypeHandler}, #{name}, #{phone}, #{fax}, #{address}, #{status, typeHandler=io.github.trident.base.util.BooleanIntTypeHandler}, #{companyName}, #{validDate}, #{invalidDate}, #{displayOrder}, #{level}, #{desc}, #{seq}, #{principal}, #{principalName}, #{createUser}, #{createDate}, #{modifyUser}, #{modifyDate})
+        (#{code}, #{leaf, typeHandler=io.github.trident.base.util.BooleanIntTypeHandler}, #{name},
+        #{phone}, #{fax}, #{address}, #{status, typeHandler=io.github.trident.base.util.BooleanIntTypeHandler},
+        #{companyName}, #{validDate}, #{invalidDate}, #{displayOrder}, #{level}, #{desc}, #{seq}, #{principal},
+        #{principalName}, #{createUser}, #{createDate}, #{modifyUser}, #{modifyDate}, #{parentCode})
     </insert>
 </mapper>
