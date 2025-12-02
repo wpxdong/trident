@@ -1,0 +1,75 @@
+@charset "utf-8";
+
+@import './_constant.scss';
+
+.el-pagination {
+  padding: 12px 0 0 0 !important;
+  text-align: right;
+  .el-pagination__sizes {
+    margin: 0;
+    .el-input {
+      margin: 0 !important;
+    }
+  }
+}
+
+.el-table {
+  // margin-top: 10px;
+  thead {
+    th {
+      background: #fafafa;
+      padding: 8px 0;
+    }
+  }
+  tbody {
+    td {
+      padding: 8px 0;
+    }
+  }
+}
+
+// 页面布局通用样式
+.outer-container {
+  background: $BCAKGROUND_COLOR;
+  height: 100%;
+  overflow: auto;
+  // 页面查询条件块通用样式
+  .filter-container {
+    position: sticky;
+    top: 0;
+    padding: 10px 20px;
+    margin: 0 20px 20px 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.05);
+    z-index: 100;
+    .filter-item {
+      display: inline-block;
+      line-height: 40px;
+    }
+    .filter-opt {
+      display: inline-block;
+    }
+    .el-input,
+    .el-select {
+      display: inline-block;
+      width: 200px;
+      margin-right: 8px;
+    }
+  }
+  // 页面内容块通用样式
+  .content-container {
+    .title {
+      padding-bottom: 8px;
+      border-bottom: 1px solid $CUSTOM_BORDER_COLOR;
+    }
+    ::v-deep .filter-container {
+      box-shadow: none;
+      margin: 0;
+      padding: 10px 0;
+    }
+    padding: 20px 20px;
+    margin: 0 20px 20px 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.05);
+  }
+}
