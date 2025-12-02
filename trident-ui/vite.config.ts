@@ -1,29 +1,20 @@
+import { fileURLToPath, URL } from 'node:url'
+
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'node:path'
-import autoprefixer from 'autoprefixer'
+import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',
-  build: {
-    outDir: 'build'
-  },
-  css: {
-    postcss: {
-      plugins: [
-        autoprefixer({})
-      ]
-    }
-  },
+  plugins: [
+    vue(),
+    vueJsx(),
+    vueDevTools(),
+  ],
   resolve: {
-    alias: [
-      {
-        find: 'src/',
-        replacement: `${path.resolve(__dirname, 'src')}/`
-      }
-    ],
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.scss'],
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    },
   },
-  plugins: [react()],
 })
