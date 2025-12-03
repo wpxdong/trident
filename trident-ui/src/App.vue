@@ -9,8 +9,7 @@
 <script lang="ts"></script>
 
 <style scoped lang="scss">
-@import 'scss/_reset.scss';
-@import 'scss/_common.scss';
+@use 'scss/_index.scss' as *;
 html,
 body {
   height: 100%;

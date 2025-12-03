@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-@import './_constant.scss';
+@use './_constant.scss' as *;
 
 .el-pagination {
   padding: 12px 0 0 0 !important;
