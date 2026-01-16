@@ -1,12 +1,18 @@
 <template>
   <div id="app">
-    <div class="page-nav"></div>
+    <div class="page-nav">
+      <div id="nav">
+        <TheSlider></TheSlider>
+      </div>
+    </div>
     <div class="page-content">
       <router-view></router-view>
     </div>
   </div>
 </template>
-<script lang="ts"></script>
+<script lang="ts" setup>
+import TheSlider from '@/layout/TheSlider.vue'
+</script>
 
 <style scoped lang="scss">
 @use 'scss/_index.scss' as *;

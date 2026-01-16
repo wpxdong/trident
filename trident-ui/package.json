@@ -16,10 +16,14 @@
     "format": "prettier --write --experimental-cli src/"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
     "@types/js-cookie": "^3.0.6",
     "@vue/cli-service": "^5.0.9",
+    "axios": "^1.13.2",
     "element-plus": "^2.11.9",
     "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
+    "nprogress": "^0.2.0",
     "pinia": "^3.0.4",
     "vue": "^3.5.25",
     "vue-i18n": "^11.2.2",
@@ -27,9 +31,12 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^7.1.0",
+    "@intlify/unplugin-vue-i18n": "^11.0.3",
     "@tsconfig/node24": "^24.0.3",
-    "@types/node": "^24.10.1",
-    "@vitejs/plugin-vue": "^6.0.2",
+    "@types/node": "^24.10.4",
+    "@types/nprogress": "^0.2.3",
+    "@vitejs/plugin-vue": "^6.0.3",
     "@vitejs/plugin-vue-jsx": "^5.1.2",
     "@vue/cli-plugin-babel": "^5.0.9",
     "@vue/cli-plugin-typescript": "^5.0.9",
